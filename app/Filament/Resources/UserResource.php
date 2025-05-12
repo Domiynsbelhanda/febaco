@@ -6,12 +6,16 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Spatie\Permission\Models\Role;
 
 class UserResource extends Resource
 {
@@ -23,7 +27,28 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
+
+                TextInput::make('email')
+                    ->required()
+                    ->email()
+                    ->maxLength(255),
+
+                Select::make('role')
+                    ->label('Rôle')
+                    ->options(Role::pluck('name', 'name')->toArray())
+                    ->afterStateHydrated(function ($state, $set, $record) {
+                        $set('role', $record->roles->pluck('name')->first());
+                    })
+                    ->afterStateHydrated(function ($state, $set, $record) {
+                        if ($record && $record->exists) {
+                            $set('role', $record->roles->pluck('name')->first());
+                        }
+                    })
+                    ->required()
+                    ->native(false),
             ]);
     }
 
@@ -31,7 +56,9 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('name')->searchable(),
+                TextColumn::make('email')->searchable(),
+                TextColumn::make('roles.name')->label('Rôle'),
             ])
             ->filters([
                 //
@@ -61,4 +88,10 @@ class UserResource extends Resource
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()?->hasRole('Administrateur');
+    }
+
 }
