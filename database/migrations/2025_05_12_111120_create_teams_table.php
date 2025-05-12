@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('entity_id')->constrained('entities')->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->string('responsible_name')->nullable();
+            $table->string('contact_email')->nullable();
+            $table->string('contact_phone')->nullable();
+            $table->string('address')->nullable();
+            $table->string('logo')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

@@ -27,4 +27,10 @@ class Entity extends Model
         return $this->belongsTo(Federation::class);
     }
 
+    public function teams()
+    {
+        return $this->hasMany(Team::class);
+    }
+
+
 }
