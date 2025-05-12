@@ -82,4 +82,9 @@ class FederationResource extends Resource
             'edit' => Pages\EditFederation::route('/{record}/edit'),
         ];
     }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()?->hasRole('Administrateur') || auth()->user()?->hasRole('Fédération');
+    }
 }

@@ -36,6 +36,12 @@ class UserResource extends Resource
                     ->email()
                     ->maxLength(255),
 
+                TextInput::make('password')
+                    ->label('Mot de passe')
+                    ->password()
+                    ->required(fn (string $context) => $context === 'create')
+                    ->maxLength(255),
+
                 Select::make('role')
                     ->label('Rôle')
                     ->options(Role::pluck('name', 'name')->toArray())

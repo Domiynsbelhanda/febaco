@@ -15,4 +15,10 @@ class Federation extends Model
         'description',
         'logo',
     ];
+
+    public function entities()
+    {
+        return $this->hasMany(Entity::class);
+    }
+
 }
