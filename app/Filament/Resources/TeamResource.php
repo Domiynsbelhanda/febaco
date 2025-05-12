@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TeamResource\Pages;
-use App\Filament\Resources\TeamResource\RelationManagers;
+use App\Filament\Resources\TeamResource\RelationManagers\AthletesRelationManager;
 use App\Models\Entity;
 use App\Models\Team;
 use App\Models\User;
@@ -93,7 +93,7 @@ class TeamResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            AthletesRelationManager::class,
         ];
     }
 
