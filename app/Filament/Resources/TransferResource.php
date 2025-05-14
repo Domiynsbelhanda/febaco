@@ -145,7 +145,10 @@ class TransferResource extends Resource
                             'status' => 'accepté_par_recepteur',
                             'confirmation_by_destination' => true,
                         ]);
-                    }),
+                    })->after(function () {
+                        return redirect(request()->header('Referer') ?? url()->current());
+                    })
+                ,
 
                 Tables\Actions\Action::make('refuser')
                     ->label('Refuser')
@@ -163,7 +166,10 @@ class TransferResource extends Resource
                             'status' => 'refusé',
                             'confirmation_by_destination' => false,
                         ]);
-                    }),
+                    })->after(function () {
+                        return redirect(request()->header('Referer') ?? url()->current());
+                    })
+                ,
 
                 Tables\Actions\Action::make('valider')
                     ->label('Valider')
@@ -184,11 +190,13 @@ class TransferResource extends Resource
                         $record->athlete->update([
                             'team_id' => $record->to_team_id,
                         ]);
+                    })->after(function () {
+                        return redirect(request()->header('Referer') ?? url()->current());
                     }),
 
                 Tables\Actions\Action::make('rejeter')
                     ->label('Rejeter')
-                    ->icon('heroicon-o-ban')
+                    ->icon('heroicon-o-x-circle')
                     ->color('danger')
                     ->visible(fn ($record): bool =>
                         (auth()->user()->hasRole('Fédération')
@@ -201,7 +209,10 @@ class TransferResource extends Resource
                             'status' => 'refusé',
                             'confirmation_by_federation' => false,
                         ]);
-                    }),
+                    })->after(function () {
+                        return redirect(request()->header('Referer') ?? url()->current());
+                    })
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
