@@ -38,4 +38,9 @@ class Athlete extends Model
         return $this->hasMany(Transfer::class);
     }
 
+    public function performances()
+    {
+        return $this->hasMany(Performance::class);
+    }
+
 }
