@@ -20,6 +20,15 @@ class Team extends Model
         'address',
         'logo',
         'is_active',
+        'matricule',
+        'province',
+        'categorie',
+        'ville',
+        'division',
+        'version',
+        'casier_no',
+        'bp',
+        'couleurs',
     ];
 
     public function entity()

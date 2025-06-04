@@ -34,7 +34,7 @@ class TeamResource extends Resource
         return $form
             ->schema([
                 Select::make('entity_id')
-                    ->label('Entité d\'affiliation')
+                    ->label('Ligue, Entente ou Cercle')
                     ->options(Entity::pluck('name', 'id'))
                     ->searchable()
                     ->required(),
@@ -46,16 +46,50 @@ class TeamResource extends Resource
                     ->nullable(),
 
                 TextInput::make('name')
-                    ->label('Nom de l\'équipe')
+                    ->label('Nom du club')
                     ->required(),
+
+                TextInput::make('matricule')
+                    ->label('Matricule'),
+
+                TextInput::make('province')
+                    ->label('Province'),
+
+                TextInput::make('categorie')
+                    ->label('Catégorie'),
+
+                TextInput::make('ville')
+                    ->label('Ville'),
+
+                TextInput::make('division')
+                    ->label('Division'),
+
+                TextInput::make('version')
+                    ->label('Version'),
+
+                TextInput::make('casier_no')
+                    ->label('Casier N°'),
+
+                TextInput::make('bp')
+                    ->label('B.P'),
+
+                TextInput::make('couleurs')
+                    ->label('Couleurs'),
 
                 Textarea::make('description')
                     ->label('Description'),
 
-                TextInput::make('responsible_name')->label('Responsable'),
-                TextInput::make('contact_email')->label('Email'),
-                TextInput::make('contact_phone')->label('Téléphone'),
-                TextInput::make('address')->label('Adresse'),
+                TextInput::make('responsible_name')
+                    ->label('Correspondant officiel'),
+
+                TextInput::make('contact_email')
+                    ->label('Email'),
+
+                TextInput::make('contact_phone')
+                    ->label('Téléphone'),
+
+                TextInput::make('address')
+                    ->label('Siège'),
 
                 FileUpload::make('logo')
                     ->label('Logo')
@@ -63,7 +97,8 @@ class TeamResource extends Resource
                     ->directory('team-logos')
                     ->preserveFilenames(),
 
-                Toggle::make('is_active')->label('Actif'),
+                Toggle::make('is_active')
+                    ->label('Actif'),
             ]);
     }
 
@@ -71,10 +106,14 @@ class TeamResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('logo')->label('Logo'),
-                TextColumn::make('name')->label('Nom'),
+                ImageColumn::make('logo')->label('Logo')->circular(),
+                TextColumn::make('name')->label('Nom du club')->sortable()->searchable(),
+                TextColumn::make('matricule')->label('Matricule')->sortable()->searchable(),
+                TextColumn::make('province')->label('Province')->sortable(),
+                TextColumn::make('categorie')->label('Catégorie')->sortable(),
+                TextColumn::make('division')->label('Division'),
                 TextColumn::make('entity.name')->label('Entité'),
-                TextColumn::make('responsible_name')->label('Responsable'),
+                TextColumn::make('responsible_name')->label('Correspondant officiel'),
                 IconColumn::make('is_active')->boolean()->label('Actif'),
             ])
             ->filters([
