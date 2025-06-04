@@ -40,7 +40,9 @@ class UserResource extends Resource
                     ->label('Mot de passe')
                     ->password()
                     ->required(fn (string $context) => $context === 'create')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null) // facultatif, car on gère déjà dans mutateFormDataBeforeSave
+                    ->dehydrated(fn ($state) => filled($state)),
 
                 Select::make('role')
                     ->label('Rôle')
@@ -99,5 +101,30 @@ class UserResource extends Resource
     {
         return auth()->user()?->hasRole('Administrateur');
     }
+
+    public static function mutateFormDataBeforeSave(array $data): array
+    {
+        unset($data['role']);
+
+
+        if (empty($data['password'])) {
+            unset($data['password']);
+        } else {
+            $data['password'] = bcrypt($data['password']);
+        }
+
+        return $data;
+    }
+
+    public static function afterSave(Form $form, $record): void
+    {
+        $role = $form->getState()['role'] ?? null;
+
+        if ($role) {
+            $record->syncRoles([$role]); // On remplace tous les rôles existants
+        }
+    }
+
+
 
 }
