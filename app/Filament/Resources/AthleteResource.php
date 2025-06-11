@@ -39,6 +39,13 @@ class AthleteResource extends Resource
                     ->disabled()
                     ->dehydrated(), // 👈 ajoute cette ligne !
 
+                Forms\Components\FileUpload::make('photo')
+                    ->image()
+                    ->disk('public')
+                    ->directory('photos')
+                    ->label('Photo de l’athlète')
+                    ->visibility('public'),
+
 
                 TextInput::make('last_name')->label('Nom')->required(),
                 TextInput::make('middle_name')->label('Postnom')->required(),
