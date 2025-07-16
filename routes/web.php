@@ -1,5 +1,6 @@
 <?php
 
+use App\Filament\Resources\TeamResource\Pages\ViewTeamTransfers;
 use App\Http\Controllers\Api\PublicDataController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +20,6 @@ Route::get('/', function () {
 });
 
 Route::get('/public-data', [PublicDataController::class, 'index']);
+
+Route::get('/admin/teams/{record}/transferts', ViewTeamTransfers::class)
+    ->name('filament.admin.resources.teams.view-team-transfers');

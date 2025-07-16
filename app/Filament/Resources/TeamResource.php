@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TeamResource\Pages;
+use App\Filament\Resources\TeamResource\Pages\ViewTeamTransfers;
 use App\Filament\Resources\TeamResource\RelationManagers\AthletesRelationManager;
 use App\Models\Entity;
 use App\Models\Team;
@@ -142,6 +143,7 @@ class TeamResource extends Resource
             'index' => Pages\ListTeams::route('/'),
             'create' => Pages\CreateTeam::route('/create'),
             'edit' => Pages\EditTeam::route('/{record}/edit'),
+            'view-team-transfers' => ViewTeamTransfers::route('/{record}/transferts'),
         ];
     }
 
